@@ -92,10 +92,15 @@ https://flume.apache.org/releases/content/1.6.0/FlumeUserGuide.html#hdfs-sink
 
 
 下面讲讲文件滚动策略，有5种策略，上面的配置其实没有说清楚：
+
 1）基于时间，配置项是hdfs.rollInterval，默认是30，单位是秒；0表示文件不基于时间滚动。
+
 2）基于文件大小，配置项是hdfs.rollSize，默认是1024，单位是字节；0表示文件不基于大小滚动。
+
 3）基于hdfs文件副本数量，配置项是hdfs.minBlockReplicas，默认读取hadoop上的配置。当前文件副本数量小于hdfs.minBlockReplicas时，文件滚动。1表示文件不基于hdfs文件副本数量滚动。
+
 4）基于event数量，配置项是hdfs.rollCount，默认是10；0表示文件不基于event数量滚动。
+
 5）基于文件闲置时间，表示文件在指定时间内没有数据写入，则文件滚动。配置项是hdfs.idleTimeout，默认是0，表示文件不基于文件闲置时间滚动。
 
 当这几个策略同时存在的情况下，优先级是：基于文件闲置时间 > 基于hdfs文件副本数量 > 基于event数量 > 基于文件大小 > 基于文件时间 
