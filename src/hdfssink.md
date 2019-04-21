@@ -79,9 +79,16 @@ HDFSWriter接口定义如下：
 
 3. HDFSEventSink的主要配置
 
+https://flume.apache.org/releases/content/1.6.0/FlumeUserGuide.html#hdfs-sink
+
+其中罗列几项对性能影响较大的配置：
+
 |Name|Default|Description|
 |:-------:|:-------:|:-------:|
-|hdfs.useLocalTimeStamp|false|Use the local time (instead of the timestamp from the event header) while replacing the escape sequences.|
+|hdfs.batchSize|100|number of events written to file before it is flushed to HDFS   这个配置对sink的输出吞吐量有很大影响，因为上面提到的open和close开销较大|
+|hdfs.maxOpenFiles|5000|Allow only this number of open files. If this number is exceeded, the oldest file is closed.  即上面提到的sfWriters的大小，超过就采用LRU算法关闭某些文件|
+|hdfs.threadsPoolSize|10|Number of threads per HDFS sink for HDFS IO ops (open, write, etc.)  open、append、flush和close操作都由该线程池来处理|
+|hdfs.rollTimerPoolSize|1|Number of threads per HDFS sink for scheduling timed file rolling  文件滚动由该线程池来处理|
 
 
 下面讲讲文件滚动策略，有5种策略，上面的配置其实没有说清楚：
